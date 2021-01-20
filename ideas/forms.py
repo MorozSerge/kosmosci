@@ -10,6 +10,6 @@ class IdeaForm(forms.ModelForm):
 			'body': forms.Textarea(attrs={'autofocus': 'autofocus'})
 		}
 		labels = {
-			'body': 'Your idea:',
+			'body': 'Your idea (350 symbols max):',
 			'image': 'Attach an image'
 		}

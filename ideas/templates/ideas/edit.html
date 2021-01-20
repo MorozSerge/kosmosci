@@ -17,14 +17,14 @@ Ideas
                             {{form.body|as_crispy_field}}
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row my-3">
                         {% if idea.image %}
-                            <img class="img-responsive col-sm-6" src="{{ idea.image.url }}"
+                            <img class="img-responsive col-sm-6 col-sm-offset-1 border rounded my-1" src="{{ idea.image.url }}"
                                  alt="attached image">
                         {% endif %}
                     </div>
                     <div class="row">
-                        <div class="col-sm-offset-1 col-sm-10">
+                        <div class="col-sm-offset-1 col-sm-2">
                             {{form.image|as_crispy_field}}
                         </div>
                     </div>
