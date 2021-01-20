@@ -1,0 +1,57 @@
+{% extends 'account/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title%}
+Ideas
+{% endblock %}
+
+{% block main%}
+	<div class="row">
+        <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+            <div class="thumbnail">
+                <h2 style="text-align:center">Recreate idea</h2>
+                <form class="form-horizontal" method="post" action="{% url 'ideas:edit_idea' idea.id %}"
+                      enctype="multipart/form-data">
+                    <div class="row">
+                    <div class="col-sm-offset-1 col-sm-10">
+                            {{form.body|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% if idea.image %}
+                            <img class="img-responsive col-sm-6" src="{{ idea.image.url }}"
+                                 alt="attached image">
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            {{form.image|as_crispy_field}}
+                        </div>
+                    </div>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="col-sm-offset-5 col-sm-2">
+                            <button type="submit" class="btn btn-success">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+
+            <form class="form-horizontal" method="post" action="{% url 'ideas:delete_idea' idea.id %}">
+                <div class="form-group">
+                    <div class="col-sm-offset-5 col-sm-2">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </div>
+                </div>
+                {% csrf_token %}
+            </form>
+
+
+        </div>
+    </div>
+
+{% endblock %}

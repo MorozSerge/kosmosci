@@ -1,0 +1,23 @@
+{% extends 'account/base.html' %}
+
+{% block title%}
+News
+{% endblock %}
+
+{% block main%}
+{% for source in sources %}
+<div class="col-md-9 offset-md-1">
+	<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative some-info">
+		<div class="col p-4 d-flex flex-column position-static">
+			<h3 class="mb-0">{{source.name}}</h3>
+			<p class="card-text mb-auto">{{source.description}}</p>
+			<h6>{% if source.type_space %}Space{% else %}Science {% endif %} focused</h6>
+			<a class="stretched-link" href="{% url 'news:news' source.id%}"></a>
+		</div>
+		<div class="col-auto d-none d-lg-block">
+			<img border="1" class="rounded-3" height="200" src="{{source.logo}}" width="200">
+		</div>
+	</div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends 'account/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title%}
+Profile
+{% endblock %}
+
+{% block main%}
+<div class="row"><h2 class="text-center">Profile settings of {{ user.username }}</h2></div>
+<div class="container-fluid d-flex flex-column flex-md-row ">
+	<div class="col-md-3">
+		<div class="card card-body">
+			{% if user.portrait %}
+	<img alt="Can't load image" class="img-thumbnail"
+		 src=" {{ user.portrait.url }}">
+	{% else %}
+	<img alt="Can't load image" class="img-thumbnail"
+		 src="{% static '/images/profile.jpg' %}">
+	{% endif %}
+		</div>
+	</div>
+
+
+	<div class="col-md-8">
+		<div class="card card-body">
+		<form action="{% url 'account:profile' %}" class="form-horizontal" enctype="multipart/form-data"
+			  method="post">
+			{% csrf_token %}
+			<div class="form-group px-3">
+				<div class="col-sm-8 col-md-offset-1">
+					{{form.portrait|as_crispy_field}}
+				</div>
+			</div>
+			<div class="form-group px-3 col-auto">
+				<div class="col-sm-8 col-md-offset-1">
+					{{form.about|as_crispy_field}}
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-5 col-sm-2">
+					<button class="btn btn-success" type="submit">Save</button>
+				</div>
+			</div>
+		</form>
+		<div class="form-group">
+			<button aria-controls="changing_pass" aria-expanded="false"
+					class="btn btn-primary col-xs-offset-1 col-xs-10"
+					data-bs-target="#changing_pass" data-bs-toggle="collapse"
+					type="button">
+				Change password
+			</button>
+		</div>
+		<div class="col-xs-12 collapse" id="changing_pass">
+			<div class="container">
+				<form action="{% url 'account:profile' %}" class="form-horizontal" method="post">
+					{% csrf_token %}
+					<div class="row">
+						<div class="col-sm-8">
+							{{ pass_form|crispy}}
+						</div>
+					</div>
+					<div class="row  my-3">
+						<div class="col-sm-offset-3 col-sm-2">
+							<button class="btn btn-success" type="submit">Save changes</button>
+						</div>
+
+					</div>
+
+				</form>
+			</div>
+		</div>
+		</div>
+	</div>
+
+
+</div>
+<div class="bg-light p-5 rounded m-5">
+
+{% if new_source %}
+<div class="row" id="subscribe_news">
+	<h2 class="text-center">Subscription management</h2>
+	<button aria-controls="news_subs" aria-expanded="false" class="btn btn-primary col-xs-offset-1 col-xs-10"
+			data-bs-target="#news_subs" data-bs-toggle="collapse"
+			type="button">
+		Subscribe to news source <span class="badge">{{ news_subs | length }}</span>
+	</button>
+
+</div>
+
+<div class="row collapse" id="news_subs">
+	<div class="col-lg-offset-2 col-lg-8">
+		<div class="jumbotron">
+						<form action="{% url 'account:newsUpdate' %}" class="form-horizontal" method="post">
+				{% csrf_token %}
+				<table class="table table-bordered table-sm" id="news_sources">
+					<thead>
+					<tr>
+						<th>
+							Name
+						</th>
+						<th>
+							News focused on space
+						</th>
+						<th>
+							Choose
+						</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for Source in new_source %}
+					<tr>
+						<td>
+							<a href="{% url 'news:news' Source.id %}">{{ Source.name }}</a>
+						</td>
+						<td>
+							{{ Source.type_space }}
+						</td>
+						<td>
+							<input {% if Source.name in news_subs %}
+                                            checked
+                                        {% endif %}  id="src{{ Source.id }}" type="checkbox" name="{{ Source.name }}"
+                                            value="{{ True }}">
+                                    </td>
+                                </tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				<div class="form-group">
+					<div class="col-sm-2">
+						<button class="btn btn-success" type="submit">Save</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+{% endif %}
+
+{% if idea_source %}
+<div class="row" id="subscribe_blogs">
+	<button aria-controls="blog_subs" aria-expanded="false" class="btn btn-primary col-xs-offset-1 col-xs-10"
+			data-bs-target="#blog_subs" data-bs-toggle="collapse"
+			type="button">
+		Follow other people ideas <span class="badge">{{ idea_subs | length }}</span>
+	</button>
+</div>
+<div class="row collapse" id="blog_subs">
+	<div class="col-lg-offset-2 col-lg-8">
+		<div class="jumbotron">
+			<form action="{% url 'account:ideasUpdate' %}" class="form-horizontal" method="post">
+				{% csrf_token %}
+				<table class="table table-bordered table-sm" id="idea_sources">
+					<thead>
+					<tr>
+						<th>
+							Name
+						</th>
+						<th>
+							About user
+						</th>
+						<th>
+							Choose
+						</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for Enlightened in idea_source %}
+					<tr>
+						<td>
+							<a href="{% url 'ideas:others_ideas' Enlightened.id %}">
+								{% if Enlightened.portrait %}
+								<img alt="user's avatar" class="img-responsive" src="{{ Enlightened.portrait.url }}"
+									 width="50px" style="max-height:100px">
+								{% else %}
+								<img alt="no avatar" class="img-responsive"
+									 src="{% static 'images/profile.jpg' %}" width="50px">
+								{% endif %}
+
+								{{ Enlightened.username }}</a>
+						</td>
+						<td>
+							{{ Enlightened.about }}
+						</td>
+						<td>
+							<input {% if Enlightened.username in idea_subs %}
+                                            checked
+                                        {% endif %}  id="src{{ Enlightened.id }}" type="checkbox" name="{{ Enlightened.username }}"
+                                            value="{{ True }}">
+                                    </td>
+                                </tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				<div class="form-group">
+					<div class="col-sm-2">
+						<button class="btn btn-success" type="submit">Save</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endif %}
+</div>
+
+{% endblock %}

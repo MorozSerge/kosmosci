@@ -1,0 +1,126 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>{% block title%}
+		KosmoSci{% endblock %}</title>
+
+
+	<!-- Bootstrap core CSS -->
+	<link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+		  integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" rel="stylesheet">
+
+	<script crossorigin="anonymous"
+			integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+			src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script crossorigin="anonymous"
+			integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+			src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script crossorigin="anonymous"
+			src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script crossorigin="anonymous"
+			src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+	<link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
+	<script crossorigin="anonymous"
+			integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+	<!-- Custom styles for this template -->
+	<link href="{% static '/CSS/style.css' %}" rel="stylesheet">
+	<link href="{% static '/CSS/bootstrap.css' %}" rel="stylesheet">
+	<style>
+		.my-text{
+		word-break:break-all;
+		}
+	</style>
+</head>
+
+<body style="background-color:#7dd0e0">
+
+<header class="site-header sticky-top py-1 mb-5">
+	<nav class="collapse collapse-navbar container d-flex flex-column flex-md-row justify-content-between">
+		<a aria-label="Product" class="py-2 d-flex" href="{% url 'home' %}"><strong>KosmoSci</strong></a>
+		<a class="py-2  d-md-inline-flex" href="{% url 'news:feed' 1 %}">Feed</a>
+		<a class="py-2  d-md-inline-flex" href="{% url 'news:sources' %}">News</a>
+		<a class="py-2  d-md-inline-flex" href="{% url 'ideas:ideas' %}">Ideas</a>
+		<a class="py-2  d-md-inline-flex" href="{% url 'account:profile' %}">Profile</a>
+		<a class=" d-md-inline-block py-2 btn btn-outline-primary d-md-inline-block" href="{% url 'account:logout' %}">Sign
+			out</a>
+	</nav>
+</header>
+
+
+<div class="container-fluid">
+	{% block main%}
+	<div class="col-md-9 offset-md-1">
+		<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative some-info">
+			<div class="col p-4 d-flex flex-column position-static">
+				<h3 class="mb-0">Feed</h3>
+				<p class="card-text mb-auto">Here you can observe all news and ideas you have subscribed for. And
+					not only: you may choose all news by type you need or just all of them from this website's
+					sources.</p>
+				<a class="stretched-link" href="{% url 'news:feed' 1 %}"></a>
+			</div>
+			<div class="col-auto d-none d-lg-block">
+				<img border="1" class="rounded-3" height="200" src="{% static '/images/feed.jpg' %}" width="200">
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9 offset-md-1">
+		<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative some-info">
+			<div class="col p-4 d-flex flex-column position-static">
+				<h3 class="mb-0">News</h3>
+				<p class="card-text mb-auto">This is a place where you watch news of certain source.</p>
+				<a class="stretched-link" href="{% url 'news:sources' %}"></a>
+			</div>
+			<div class="col-auto d-none d-lg-block">
+				<img border="1" class="rounded-3" height="200" src="{% static '/images/news.jpg' %}" width="200">
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9 offset-md-1">
+		<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative some-info">
+			<div class="col p-4 d-flex flex-column position-static">
+				<h3 class="mb-0">Ideas</h3>
+				<p class="card-text mb-auto">On this page all ideas you have created are stored. Also you make new
+					ideas here as well.</p>
+				<a class="stretched-link" href="{% url 'ideas:ideas' %}"></a>
+			</div>
+			<div class="col-auto d-none d-lg-block">
+				<img border="1" class="rounded-3" height="200" src="{% static '/images/idea.jpg' %}" width="200">
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9 offset-md-1">
+		<div class="row g-0 border rounded-3 overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative some-info">
+			<div class="col p-4 d-flex flex-column position-static">
+				<h3 class="mb-0">Profile</h3>
+				<p class="card-text mb-auto">Here you can master your account: edit information about yourself,
+					change the profile photo and manage your subscriptions for news and ideas sources.</p>
+				<a class="stretched-link" href="{% url 'account:profile' %}"></a>
+			</div>
+			<div class="col-auto d-none d-lg-block">
+				<img border="1" class="rounded-3" height="200" src="{% static '/images/profile.jpg' %}" width="200">
+
+			</div>
+		</div>
+	</div>
+	{% endblock %}
+</div>
+
+
+<footer class="container-fluid d-flex justify-content-center border-top border-1 border-dark">
+	<h6 class="pt-1">Made by <strong>Sergey Moroz</strong></h6>
+</footer>
+</body>
+<script crossorigin="anonymous"
+		integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</html>

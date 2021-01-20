@@ -1,0 +1,72 @@
+{% extends 'account/base.html' %}
+
+{% block title%}
+News
+{% endblock %}
+
+{% block main%}
+<div class="row">
+	<div class="col-md-9 offset-md-1 mb-5">
+		<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250  some-info">
+			<div class="col p-4 d-flex flex-column position-static">
+				<h3 class="mb-0">{{source.name}}</h3>
+				<p class="card-text mb-auto">{{source.description}}</p>
+				<h6>{% if source.type_space %}Space{% else %}Science {% endif %} focused</h6>
+			</div>
+			<div class="col-auto d-none d-lg-block">
+				<img border="1" class="rounded-3" height="200" src="{{source.logo}}" width="200">
+			</div>
+		</div>
+	</div>
+</div>
+
+<hr>
+{% for item in news %}
+<div class="jumbotron">
+	<a href="{{ item.link }}"><h3>{{ item.name | safe }}</h3></a>
+	<div class="row">
+		{% if item.image %}
+		<div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+			<img alt="news_img" class="img-thumbnail img-responsive" src="{{ item.image }}">
+		</div>
+		<div class="col-xs-12 col-sm-8">
+			<p class="text-justify my-text">{{ item.description | safe }}</p>
+		</div>
+		{% else %}
+		<div class="col-xs-12">
+			<p class="text-justify my-text">{{ item.description | safe }}</p>
+		</div>
+		{% endif %}
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<p style="text-align:right"><small><i>{{item.published}}</i></small></p>
+		</div>
+	</div>
+</div>
+{% endfor %}
+{% if news %}
+<div class="row">
+	<nav aria-label="Page navigation" id="pagination">
+		<ul class="pagination">
+			{% if news.has_previous %}
+			<li><a href="?page=1">&laquo; first</a></li>
+			<li>
+				<a href="?page={{ news.previous_page_number }}">{{ news.previous_page_number }}</a>
+			</li>
+			{% endif %}
+
+			<li class="active">
+                <span>{{ news.number }}<span
+						class="sr-only">(current)</span></span>
+			</li>
+
+			{% if news.has_next %}
+			<li><a href="?page={{ news.next_page_number }}">{{ news.next_page_number }}</a></li>
+			<li><a href="?page={{ news.paginator.num_pages }}">last &raquo;</a></li>
+			{% endif %}
+		</ul>
+	</nav>
+</div>
+{% endif %}
+{% endblock %}

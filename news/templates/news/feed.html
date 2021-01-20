@@ -1,0 +1,222 @@
+{% extends 'account/base.html' %}
+
+{% block title%}
+Feed
+{% endblock %}
+
+{% block main%}
+{% if feed %}
+
+<div class="row row-no-gutters">
+	<div class=" col-8">
+
+		{% for post in feed %}
+		<div class="jumbotron px-5 py-2">
+
+			<div class="container">
+				{% if post.type == 1 %}
+				<a href="{{ post.link }}"><h3 class="text-justify">{{ post.header | safe}}</h3></a>
+				{% else %}
+				<a href="{% url 'ideas:others_ideas' post.src.id %}">
+					<h3 class="text-justify">{{ post.header }}</h3>
+				</a>
+				{% endif %}
+				<div class="row">
+					{% if post.image %}
+
+					<div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+						{% if post.type == 1 %}
+						<img alt="post's image" class="img-thumbnail img-responsive"
+							 src="{{ post.image }}">
+						{% else %}
+						<img alt="post's image" class="img-thumbnail img-responsive"
+							 src="{{ post.image.url }}">
+						{% endif %}
+					</div>
+					<div class="col-xs-12 col-sm-7">
+						<div class="caption">
+							<p class="text-justify my-text" style="moz-hyphens: auto; webkit-hyphens: auto; ms-hyphens: auto">{{ post.body | safe }}</p>
+						</div>
+					</div>
+					{% else %}
+					<div class="col-xs-12">
+						<div class="caption mx-2">
+							<p class="text-justify my-text" style="moz-hyphens: auto; webkit-hyphens: auto; ms-hyphens: auto">{{ post.body | safe }}</p>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<p style="text-align:right"><small>
+							{% if post.type == 1 %}
+							<a href="{% url 'news:news' post.src.id %}">
+								{{ post.src.name }}
+							</a>
+							{% else %}
+							<a href="{% url 'ideas:others_ideas' post.src.id %}">
+								{{ post.src.username }}
+							</a>
+							{% endif %}
+							, <i>{{ post.published }}</i>
+						</small>
+						</p>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="offset-md-1 col-2">
+		<div class="panel-group border border-dark rounded">
+			<div class="panel panel-default">
+				<a href="{% url 'news:feed' 1%}">
+					<div class="panel-heading border-bottom border-dark" style="background-color:#d5d5d5">
+						<h4 class="panel-title">
+							All your subscriptions
+						</h4>
+					</div>
+				</a>
+				<a data-toggle="collapse" href="#collapse1">
+					<div class="panel-heading border-bottom border-dark" style="background-color:#d5d5d5">
+						<h4 class="panel-title">
+							News
+						</h4>
+					</div>
+				</a>
+				<div class="panel-collapse collapse" id="collapse1">
+					<ul class="list-group">
+						<a href="{% url 'news:feed' 2%}">
+							<li class="list-group-item border-bottom border-dark">All news</li>
+						</a>
+						<a href="{% url 'news:feed' 3%}">
+							<li class="list-group-item border-bottom border-dark">Space focused news</li>
+						</a>
+						<a href="{% url 'news:feed' 4%}">
+							<li class="list-group-item border-bottom border-dark">Science focused news</li>
+						</a>
+						<a href="{% url 'news:feed' 5%}">
+							<li class="list-group-item border-bottom border-dark">News by your subscriptions</li>
+						</a>
+					</ul>
+
+				</div>
+				<a data-toggle="collapse" href="#collapse2">
+					<div class="panel-heading " style="background-color:#d5d5d5">
+						<h4 class="panel-title">
+							Ideas
+						</h4>
+					</div>
+				</a>
+				<div class="panel-collapse collapse" id="collapse2">
+					<ul class="list-group">
+						<a href="{% url 'news:feed' 6%}">
+							<li class="list-group-item border-top border-dark">All ideas</li>
+						</a>
+						<a href="{% url 'news:feed' 7%}">
+							<li class="list-group-item border-top border-dark">Ideas by your subscriptions</li>
+						</a>
+
+					</ul>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row col-2">
+	<nav aria-label="Page navigation" id="pagination">
+		<ul class="pagination">
+			{% if feed.has_previous %}
+			<li><a href="?page=1">&laquo; first</a></li>
+			<li>
+				<a href="?page={{ feed.previous_page_number }}">{{ feed.previous_page_number }}</a>
+			</li>
+			{% endif %}
+
+			<li class="active">
+                <span>{{ feed.number }}<span
+						class="sr-only">(current)</span></span>
+			</li>
+
+			{% if feed.has_next %}
+			<li><a href="?page={{ feed.next_page_number }}">{{ feed.next_page_number }}</a></li>
+			<li><a href="?page={{ feed.paginator.num_pages }}">last &raquo;</a></li>
+			{% endif %}
+		</ul>
+	</nav>
+</div>
+{% else %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="alert alert-warning alert-dismissible" role="alert">
+			<button aria-label="Close" class="close" data-dismiss="alert" type="button"><span
+					aria-hidden="true">&times;</span></button>
+			<p class="text-center">Nothing here... Maybe another filter?</p>
+		</div>
+	</div>
+</div>
+<div class="offset-md-9 col-2">
+	<div class="panel-group border border-dark rounded">
+		<div class="panel panel-default">
+			<a href="{% url 'news:feed' 1%}">
+				<div class="panel-heading border-bottom border-dark" style="background-color:#d5d5d5">
+					<h4 class="panel-title">
+						All your subscriptions
+					</h4>
+				</div>
+			</a>
+			<a data-toggle="collapse" href="#collapse1">
+				<div class="panel-heading border-bottom border-dark" style="background-color:#d5d5d5">
+					<h4 class="panel-title">
+						News
+					</h4>
+				</div>
+			</a>
+			<div class="panel-collapse collapse" id="collapse1">
+				<ul class="list-group">
+					<a href="{% url 'news:feed' 2%}">
+						<li class="list-group-item border-bottom border-dark">All news</li>
+					</a>
+					<a href="{% url 'news:feed' 3%}">
+						<li class="list-group-item border-bottom border-dark">Space focused news</li>
+					</a>
+					<a href="{% url 'news:feed' 4%}">
+						<li class="list-group-item border-bottom border-dark">Science focused news</li>
+					</a>
+					<a href="{% url 'news:feed' 5%}">
+						<li class="list-group-item border-bottom border-dark">News by your subscriptions</li>
+					</a>
+				</ul>
+
+			</div>
+			<a data-toggle="collapse" href="#collapse2">
+				<div class="panel-heading " style="background-color:#d5d5d5">
+					<h4 class="panel-title">
+						Ideas
+					</h4>
+				</div>
+			</a>
+			<div class="panel-collapse collapse" id="collapse2">
+				<ul class="list-group">
+					<a href="{% url 'news:feed' 6%}">
+						<li class="list-group-item border-top border-dark">All ideas</li>
+					</a>
+					<a href="{% url 'news:feed' 7%}">
+						<li class="list-group-item border-top border-dark">Ideas by your subscriptions</li>
+					</a>
+
+				</ul>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}
+
