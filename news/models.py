@@ -15,7 +15,7 @@ class Source(models.Model):
 
 
 class New(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=512, unique=True)
     description = models.TextField(null=True, default='')
     link = models.URLField(default='', unique=True)
     image = models.URLField(null=True)
